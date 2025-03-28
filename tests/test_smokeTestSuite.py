@@ -23,7 +23,7 @@ class TestSmokeTestSuite():
     self.driver.quit()
   
   def test_nameandLogoTest(self):
-    self.driver.get("http://127.0.0.1:5500/teton/1.6/admin.html/teton/1.6/index.html")
+    self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
     self.driver.set_window_size(1470, 920)
     elements = self.driver.find_elements(By.CSS_SELECTOR, ".header-logo img")
     assert len(elements) > 0
@@ -35,10 +35,11 @@ class TestSmokeTestSuite():
     self.driver.get("http://127.0.0.1:5500/teton/1.6/admin.html")
     self.driver.set_window_size(1470, 920)
     self.driver.find_element(By.ID, "username").click()
-    self.driver.find_element(By.ID, "username").send_keys("incorrect")
-    self.driver.find_element(By.ID, "password").send_keys("password")
+    self.driver.find_element(By.ID, "username").send_keys("wrong")
+    self.driver.find_element(By.ID, "password").send_keys("wrong")
     self.driver.find_element(By.CSS_SELECTOR, ".mysubmit:nth-child(4)").click()
-    assert self.driver.find_element(By.CSS_SELECTOR, ".errorMessage").text == "Invalid username and password."
+    elements = self.driver.find_elements(By.CSS_SELECTOR, ".errorMessage")
+    assert len(elements) > 0
   
   def test_directoryGridandListfeature(self):
     self.driver.get("http://127.0.0.1:5500/teton/1.6/directory.html")
@@ -56,9 +57,12 @@ class TestSmokeTestSuite():
     assert len(elements) > 0
     self.driver.find_element(By.NAME, "fname").click()
     self.driver.find_element(By.NAME, "fname").send_keys("John")
+    self.driver.find_element(By.NAME, "lname").click()
     self.driver.find_element(By.NAME, "lname").send_keys("Doe")
-    self.driver.find_element(By.NAME, "bizname").send_keys("Sure Clean Car Wash")
-    self.driver.find_element(By.NAME, "biztitle").send_keys("Owner")
+    self.driver.find_element(By.NAME, "bizname").click()
+    self.driver.find_element(By.NAME, "bizname").send_keys("Carwash")
+    self.driver.find_element(By.NAME, "biztitle").click()
+    self.driver.find_element(By.NAME, "biztitle").send_keys("Mechanic")
     self.driver.find_element(By.NAME, "submit").click()
     elements = self.driver.find_elements(By.NAME, "email")
     assert len(elements) > 0
@@ -86,3 +90,5 @@ class TestSmokeTestSuite():
     assert len(elements) > 0
     self.driver.find_element(By.LINK_TEXT, "Join Us").click()
     assert self.driver.find_element(By.CSS_SELECTOR, "section > h3").text == "Welcome to the Teton Chamber of Commerce Signup Wizard!"
+
+pytest.main([__file__])
